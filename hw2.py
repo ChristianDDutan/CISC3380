@@ -2,6 +2,7 @@ import os
 import shlex
 import signal
 
+# this is the code from the lecture slide you gave us 
 class Job:
     def __init__(self, pid, command, background):
         self.pid = pid
@@ -9,8 +10,8 @@ class Job:
         self.background = background
         self.status = "Running"
 
-jobs = {}  # Job directory
-next_job_id = 1  # Fixed typo (removed 's')
+jobs = {}  # job_id -> Job
+next_job_id = 1
 
 def show_jobs():
     """Displays the currently tracked background jobs."""
@@ -39,7 +40,7 @@ def reap_children():
     """Reaps zombie processes and removes them from the jobs list."""
     while True:
         try:
-            # WNOHANG means don't block; check if any child exited
+            # WNOHANG means don't block; this will check if there are any child that remains
             pid, status = os.waitpid(-1, os.WNOHANG)
 
             if pid == 0:
@@ -60,7 +61,7 @@ def run_external(args, background):
     pid = os.fork()
 
     if pid == 0:
-        # Child Process
+        # this is my workin Child Process
         try:
             os.execvp(args[0], args)
         except FileNotFoundError:
